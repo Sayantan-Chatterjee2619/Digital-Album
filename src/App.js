@@ -69,12 +69,13 @@ function App() {
   const getBookDimensions = () => {
     if (typeof window !== 'undefined') {
       const width = window.innerWidth;
-      if (width < 640) return { width: 300, height: 400 };
-      if (width < 768) return { width: 400, height: 450 };
-      if (width < 1024) return { width: 450, height: 500 };
-      return { width: 500, height: 550 };
+      if (width < 425) return { width: 150, height: 250 };
+      if (width < 768) return { width: 200, height: 250 };
+      if (width < 1024) return { width: 350, height: 400 };
+      if (width < 1440) return { width: 400, height: 450 };
+      return { width: 600, height: 650 };
     }
-    return { width: 500, height: 550 };
+    return { width: 800, height: 850 };
   };
 
   const { width: bookWidth, height: bookHeight } = getBookDimensions();
@@ -111,7 +112,7 @@ function App() {
           ref={bookRef}
           style={{ margin: '0 auto' }}
           flippingTime={800}
-          showCover={false}
+          showCover={true}
           usePortrait={false}
           startZIndex={0}
           use3dEffects={true}
