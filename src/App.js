@@ -140,9 +140,9 @@ function App() {
                 textAlign: 'center',
                 padding: '20px'
             }}>
-                <h1 style={{ fontFamily: 'Brush Script MT, cursive', fontSize: '2.5rem', marginBottom: '15px' }}>Happy 25th Marriage Anniversary</h1>
-                <p style={{ fontFamily: 'Brush Script MT, cursive', fontSize: '1.8rem', marginBottom: '25px', opacity: '0.9' }}>Mr. & Mrs. Chatterjee</p>
-                <span style={{ fontStyle: 'bold', fontSize: '1.2rem', borderTop: '1px solid rgba(255, 255, 255, 0.5)', paddingTop: '10px' }}>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8" style={{ fontFamily: 'Brush Script MT, cursive', fontSize: '2.5rem', marginBottom: '15px' }}>Happy 25th Marriage Anniversary</h1>
+                <p className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8" style={{ fontFamily: 'Brush Script MT, cursive', fontSize: '1.8rem', marginBottom: '25px', opacity: '0.9' }}>Mr. & Mrs. Chatterjee</p>
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8" style={{ fontStyle: 'bold', fontSize: '1.2rem', borderTop: '1px solid rgba(255, 255, 255, 0.5)', paddingTop: '10px' }}>
                     25.04.2026
                 </span>
             </div>
