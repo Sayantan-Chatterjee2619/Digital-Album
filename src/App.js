@@ -50,7 +50,7 @@ function App() {
   ];
 
   const photoFiles = [
-    'DSC08322.jpg', 'DSC08454.jpg', 'DSC08323.jpg', 'DSC08324.jpg',
+    'DSC08322.jpg', 'DSC08454.jpg', 'DSC08323.jpg', 'DSC08322.jpg', 'DSC08324.jpg',
     'DSC08326.jpg', 'DSC08328.jpg', 'DSC08337.jpg', 'DSC08339.jpg',
     'DSC08353.jpg', 'DSC08357.jpg', 'DSC08362.jpg', 'DSC08364.jpg',
     'DSC08365.jpg', 'DSC08377.jpg', 'DSC08390.jpg', 'DSC08393.jpg',
@@ -127,6 +127,26 @@ function App() {
               boxShadow: '0 3px 5px rgba(0,0,0,0.3)',
               position: 'relative',
             }}>
+              {index === 0 ? (
+            <div style={{
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(to right, rgb(255, 131, 131), rgb(88, 13, 13))',
+                color: '#ffffff',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                padding: '20px'
+            }}>
+                <h1 style={{ fontFamily: 'Brush Script MT, cursive', fontSize: '2.5rem', marginBottom: '15px' }}>Happy 25th Marriage Anniversary</h1>
+                <p style={{ fontFamily: 'Brush Script MT, cursive', fontSize: '1.8rem', marginBottom: '25px', opacity: '0.9' }}>Mr. & Mrs. Chatterjee</p>
+                <span style={{ fontStyle: 'bold', fontSize: '1.2rem', borderTop: '1px solid rgba(255, 255, 255, 0.5)', paddingTop: '10px' }}>
+                    25.04.2026
+                </span>
+            </div>
+        ) : (
               <img
                 src={`/Photos/${photo}`}
                 alt={`${index + 1}`}
@@ -143,7 +163,8 @@ function App() {
                   transform: 'translate(-50%, -50%)',
                 }}
               />
-              <div className="absolute bottom-2 right-3 text-xs sm:text-sm" style={{ color: '#000000' }}>
+        )}
+              <div className="absolute bottom-2 right-3 text-xs sm:text-sm" style={{ color: '#9e9e9e' }}>
                 {index + 1}
               </div>
             </div>
@@ -175,6 +196,7 @@ function App() {
           overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.95)',
             zIndex: 1000,
+            animation: 'fadeIn 0.3s ease-out',
           },
           content: {
             top: 0,
@@ -186,6 +208,7 @@ function App() {
             background: 'transparent',
             overflow: 'hidden',
             padding: 0,
+            animation: 'slideInFromRight 0.4s ease-out',
           },
         }}
       >
