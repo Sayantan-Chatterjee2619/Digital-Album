@@ -63,7 +63,7 @@ function App() {
     'DSC08482.jpg', 'DSC08483.jpg', 'DSC08486.jpg', 'DSC08488.jpg',
     'DSC08489.jpg', 'DSC08491.jpg', 'DSC08495.jpg', 'DSC08499.jpg',
     'DSC08502.jpg', 'DSC08504.jpg', 'DSC08505.jpg', 'DSC08519.jpg',
-    'DSC08508.jpg', 'DSC08509.jpg', 'DSC08512 (1).jpg', 'DSC08516.jpg',
+    'DSC08508.jpg', 'DSC08509.jpg', 'DSC08512 (1).jpg', 'DSC08516.jpg', 'DSC08357.jpg',
   ];
 
   const getBookDimensions = () => {
