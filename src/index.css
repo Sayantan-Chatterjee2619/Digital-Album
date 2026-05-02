@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.flip-page {
+  background: linear-gradient(to right,
+   rgb(255, 89, 89) 0%,
+   rgb(160, 26, 26) 80%,
+   rgb(97, 0, 0) 100%) !important;
+}
