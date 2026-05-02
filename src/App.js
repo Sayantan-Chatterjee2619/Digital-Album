@@ -125,11 +125,7 @@ function App() {
               borderRadius: '3px',
               overflow: 'hidden',
               boxShadow: '0 3px 5px rgba(0,0,0,0.3)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               position: 'relative',
-              padding: '20px',
             }}>
               <img
                 src={`/Photos/${photo}`}
@@ -140,6 +136,11 @@ function App() {
                   maxWidth: '80%',
                   maxHeight: '80%',
                   objectFit: 'contain',
+                  objectPosition: 'center',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
                 }}
               />
               <div className="absolute bottom-2 right-3 text-xs sm:text-sm" style={{ color: '#000000' }}>
