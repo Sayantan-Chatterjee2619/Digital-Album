@@ -1,52 +1,136 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 
+// ✅ ForwardRef Page component — required by react-pageflip
+const Page = React.forwardRef(({ children, style, className }, ref) => (
+  <div ref={ref} style={style} className={className}>
+    {children}
+  </div>
+));
+Page.displayName = 'Page';
+
+// ✅ Memoized inner content only — NOT wrapping the Page itself
+const CoverContent = React.memo(() => (
+  <div style={{
+    width: '100%',
+    height: '100%',
+    color: '#ffffff',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: '20px',
+  }}>
+    <h1 style={{
+      fontFamily: 'Brush Script MT, cursive',
+      fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+      fontWeight: 'bold',
+      marginBottom: '1rem',
+    }}>
+      Happy 25th Marriage Anniversary
+    </h1>
+    <p style={{
+      fontFamily: 'Brush Script MT, cursive',
+      fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
+      marginBottom: '1.5rem',
+      opacity: 0.9,
+    }}>
+      Mr. &amp; Mrs. Chatterjee
+    </p>
+    <span style={{
+      fontSize: 'clamp(0.8rem, 1.5vw, 1rem)',
+      fontWeight: 'bold',
+      borderTop: '1px solid rgba(255,255,255,0.5)',
+      paddingTop: '0.75rem',
+    }}>
+      25.04.2026
+    </span>
+  </div>
+));
+CoverContent.displayName = 'CoverContent';
+
+const PhotoContent = React.memo(({ photo, index, onOpen }) => (
+  <>
+    <img
+      src={`/Photos/${photo}`}
+      alt={`${index + 1}`}
+      loading="lazy"
+      onClick={() => onOpen(`/Photos/${photo}`)}
+      className="cursor-pointer"
+      style={{
+        maxWidth: '80%',
+        maxHeight: '80%',
+        objectFit: 'contain',
+        objectPosition: 'center',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        willChange: 'transform',
+      }}
+    />
+    <div
+      className="absolute bottom-2 right-3 text-xs sm:text-sm"
+      style={{ color: '#9e9e9e' }}
+    >
+      {index + 1}
+    </div>
+  </>
+));
+PhotoContent.displayName = 'PhotoContent';
+
 function App() {
   const bookRef = useRef(null);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1024
+  );
 
-  const goToNextPage = () => {
-    if (bookRef.current) {
-      bookRef.current.pageFlip().flipNext();
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const goToPrevPage = () => {
-    if (bookRef.current) {
-      bookRef.current.pageFlip().flipPrev();
-    }
-  };
+  const goToNextPage = useCallback(() => {
+    if (bookRef.current) bookRef.current.pageFlip().flipNext();
+  }, []);
 
-  const openModal = (photo) => {
+  const goToPrevPage = useCallback(() => {
+    if (bookRef.current) bookRef.current.pageFlip().flipPrev();
+  }, []);
+
+  const openModal = useCallback((photo) => {
     setSelectedPhoto(photo);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedPhoto(null), 300);
-  };
+  }, []);
 
   const floatingItems = useMemo(() => [
-    { emoji: '❤️', left: '8%', top: '20%', size: '48px', delay: '0s', duration: '4s' },
-    { emoji: '💕', left: '23%', top: '45%', size: '20px', delay: '1s', duration: '5s' },
-    { emoji: '♥', left: '42%', top: '70%', size: '40px', delay: '2s', duration: '3s' },
+    { emoji: '❤️', left: '8%',  top: '20%', size: '48px', delay: '0s',   duration: '4s'   },
+    { emoji: '💕', left: '23%', top: '45%', size: '20px', delay: '1s',   duration: '5s'   },
+    { emoji: '♥',  left: '42%', top: '70%', size: '40px', delay: '2s',   duration: '3s'   },
     { emoji: '❤️', left: '67%', top: '30%', size: '56px', delay: '0.5s', duration: '4.5s' },
-    { emoji: '💕', left: '15%', top: '60%', size: '24px', delay: '3s', duration: '5.5s' },
-    { emoji: '♥', left: '89%', top: '15%', size: '36px', delay: '1.5s', duration: '3.5s' },
-    { emoji: '❤️', left: '55%', top: '80%', size: '52px', delay: '2.5s', duration: '4s' },
-    { emoji: '💕', left: '33%', top: '35%', size: '18px', delay: '0.8s', duration: '5s' },
-    { emoji: '♥', left: '78%', top: '55%', size: '44px', delay: '3.5s', duration: '3s' },
-    { emoji: '❤️', left: '91%', top: '75%', size: '28px', delay: '4s', duration: '4.5s' },
-    { emoji: '💕', left: '12%', top: '90%', size: '60px', delay: '5s', duration: '5.5s' },
-    { emoji: '♥', left: '64%', top: '25%', size: '32px', delay: '6s', duration: '3.5s' },
-    { emoji: '❤️', left: '48%', top: '50%', size: '16px', delay: '4.5s', duration: '4s' },
-    { emoji: '💕', left: '72%', top: '40%', size: '50px', delay: '5.5s', duration: '5s' },
-    { emoji: '♥', left: '18%', top: '65%', size: '38px', delay: '6.5s', duration: '3s' },
+    { emoji: '💕', left: '15%', top: '60%', size: '24px', delay: '3s',   duration: '5.5s' },
+    { emoji: '♥',  left: '89%', top: '15%', size: '36px', delay: '1.5s', duration: '3.5s' },
+    { emoji: '❤️', left: '55%', top: '80%', size: '52px', delay: '2.5s', duration: '4s'   },
+    { emoji: '💕', left: '33%', top: '35%', size: '18px', delay: '0.8s', duration: '5s'   },
+    { emoji: '♥',  left: '78%', top: '55%', size: '44px', delay: '3.5s', duration: '3s'   },
+    { emoji: '❤️', left: '91%', top: '75%', size: '28px', delay: '4s',   duration: '4.5s' },
+    { emoji: '💕', left: '12%', top: '90%', size: '60px', delay: '5s',   duration: '5.5s' },
+    { emoji: '♥',  left: '64%', top: '25%', size: '32px', delay: '6s',   duration: '3.5s' },
+    { emoji: '❤️', left: '48%', top: '50%', size: '16px', delay: '4.5s', duration: '4s'   },
+    { emoji: '💕', left: '72%', top: '40%', size: '50px', delay: '5.5s', duration: '5s'   },
+    { emoji: '♥',  left: '18%', top: '65%', size: '38px', delay: '6.5s', duration: '3s'   },
   ], []);
 
   const photoFiles = useMemo(() => [
@@ -66,23 +150,36 @@ function App() {
     'DSC08508.webp', 'DSC08509.webp', 'DSC08512 (1).webp', 'DSC08516.webp', 'DSC08357.webp',
   ], []);
 
-  const getBookDimensions = () => {
-    if (typeof window !== 'undefined') {
-      const width = window.innerWidth;
-      if (width < 425) return { width: 150, height: 250 };
-      if (width < 768) return { width: 200, height: 250 };
-      if (width < 1024) return { width: 350, height: 400 };
-      if (width < 1440) return { width: 400, height: 450 };
-      return { width: 600, height: 650 };
-    }
-    return { width: 800, height: 850 };
-  };
+  const getBookDimensions = useCallback((width) => {
+    if (width < 425)  return { width: 150, height: 250, use3d: false };
+    if (width < 768)  return { width: 200, height: 250, use3d: false };
+    if (width < 1024) return { width: 350, height: 400, use3d: true  };
+    if (width < 1440) return { width: 400, height: 450, use3d: true  };
+    return                   { width: 600, height: 650, use3d: true  };
+  }, []);
 
-  const { width: bookWidth, height: bookHeight } = getBookDimensions();
+  const { width: bookWidth, height: bookHeight, use3d } = getBookDimensions(windowWidth);
+
+  const pageStyle = useMemo(() => ({
+    width: `${bookWidth}px`,
+    height: `${bookHeight}px`,
+    borderRadius: '3px',
+    overflow: 'hidden',
+    boxShadow: '0 3px 5px rgba(0,0,0,0.3)',
+    position: 'relative',
+  }), [bookWidth, bookHeight]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-8 px-4" style={{ background: 'linear-gradient(135deg, #e8e8e8 0%, #f4c2c2 50%, #d4d4d4 100%)', position: 'relative', zIndex: 1 }}>
-      {floatingItems.map((item, index) => (
+    <div
+      className="min-h-screen flex flex-col items-center py-8 px-4"
+      style={{
+        background: 'linear-gradient(135deg, #e8e8e8 0%, #f4c2c2 50%, #d4d4d4 100%)',
+        position: 'relative',
+        zIndex: 1,
+      }}
+    >
+      {/* Floating hearts — desktop only */}
+      {windowWidth >= 768 && floatingItems.map((item, index) => (
         <div
           key={index}
           style={{
@@ -101,7 +198,10 @@ function App() {
         </div>
       ))}
 
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8" style={{ color: '#5d4037', textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)' }}>
+      <h1
+        className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8"
+        style={{ color: '#5d4037', textShadow: '2px 2px 4px rgba(255,255,255,0.5)' }}
+      >
         Silver Jubilee Anniversary
       </h1>
 
@@ -115,63 +215,22 @@ function App() {
           showCover={true}
           usePortrait={false}
           startZIndex={0}
-          use3dEffects={true}
+          use3dEffects={use3d}
           drawShadow={true}
         >
+          {/* ✅ Page is a direct forwardRef child — inner content is memoized separately */}
           {photoFiles.map((photo, index) => (
-            <div key={index} className="flip-page" style={{
-              width: `${bookWidth}px`,
-              height: `${bookHeight}px`,
-              borderRadius: '3px',
-              overflow: 'hidden',
-              boxShadow: '0 3px 5px rgba(0,0,0,0.3)',
-              position: 'relative',
-            }}>
-              {index === 0 ? (
-            <div style={{
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(to right, rgb(255, 131, 131), rgb(88, 13, 13))',
-                color: '#ffffff',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                padding: '20px'
-            }}>
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4" style={{ fontFamily: 'Brush Script MT, cursive' }}>Happy 25th Marriage Anniversary</h1>
-                <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-6 opacity-90" style={{ fontFamily: 'Brush Script MT, cursive' }}>Mr. & Mrs. Chatterjee</p>
-                <span className="text-sm sm:text-base font-bold border-t border-white/50 pt-3">
-                    25.04.2026
-                </span>
-            </div>
-        ) : (
-              <img
-                src={`/Photos/${photo}`}
-                alt={`${index + 1}`}
-                onClick={() => openModal(`/Photos/${photo}`)}
-                className="cursor-pointer"
-                style={{
-                  maxWidth: '80%',
-                  maxHeight: '80%',
-                  objectFit: 'contain',
-                  objectPosition: 'center',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                }}
-              />
-        )}
-              <div className="absolute bottom-2 right-3 text-xs sm:text-sm" style={{ color: '#9e9e9e' }}>
-                {index + 1}
-              </div>
-            </div>
+            <Page key={index} className="flip-page" style={pageStyle}>
+              {index === 0
+                ? <CoverContent />
+                : <PhotoContent photo={photo} index={index} onOpen={openModal} />
+              }
+            </Page>
           ))}
         </HTMLFlipBook>
       </div>
 
+      {/* Navigation buttons */}
       <div className="flex gap-4 sm:gap-5 mt-6 sm:mt-8">
         <button
           onClick={goToPrevPage}
@@ -189,14 +248,14 @@ function App() {
         </button>
       </div>
 
+      {/* Lightbox modal */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={{
           overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.95)',
+            backgroundColor: 'rgba(0,0,0,0.95)',
             zIndex: 1000,
-            animation: 'fadeIn 0.3s ease-out',
           },
           content: {
             top: 0,
@@ -208,7 +267,6 @@ function App() {
             background: 'transparent',
             overflow: 'hidden',
             padding: 0,
-            animation: 'slideInFromRight 0.4s ease-out',
           },
         }}
       >
@@ -226,14 +284,14 @@ function App() {
           >
             <img
               src={selectedPhoto}
-              alt=""
+              alt={selectedPhoto}
               onClick={(e) => e.stopPropagation()}
               style={{
                 maxWidth: '95%',
                 maxHeight: '95%',
                 objectFit: 'contain',
                 borderRadius: '5px',
-                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)',
+                boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
               }}
             />
             <button
@@ -249,7 +307,7 @@ function App() {
                 height: '45px',
                 fontSize: '24px',
                 cursor: 'pointer',
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
                 zIndex: 10,
                 display: 'flex',
                 alignItems: 'center',

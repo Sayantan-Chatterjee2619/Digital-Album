@@ -18,6 +18,9 @@ code {
 
 .flip-page {
   background: linear-gradient(to right, rgb(255, 131, 131), rgb(88, 13, 13));
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 @keyframes spin {
