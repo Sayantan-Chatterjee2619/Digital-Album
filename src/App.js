@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import Modal from 'react-modal';
 
@@ -31,7 +31,7 @@ function App() {
     setTimeout(() => setSelectedPhoto(null), 300);
   };
 
-  const floatingItems = [
+  const floatingItems = useMemo(() => [
     { emoji: '❤️', left: '8%', top: '20%', size: '48px', delay: '0s', duration: '4s' },
     { emoji: '💕', left: '23%', top: '45%', size: '20px', delay: '1s', duration: '5s' },
     { emoji: '♥', left: '42%', top: '70%', size: '40px', delay: '2s', duration: '3s' },
@@ -47,9 +47,9 @@ function App() {
     { emoji: '❤️', left: '48%', top: '50%', size: '16px', delay: '4.5s', duration: '4s' },
     { emoji: '💕', left: '72%', top: '40%', size: '50px', delay: '5.5s', duration: '5s' },
     { emoji: '♥', left: '18%', top: '65%', size: '38px', delay: '6.5s', duration: '3s' },
-  ];
+  ], []);
 
-  const photoFiles = [
+  const photoFiles = useMemo(() => [
     'DSC08322.jpg', 'DSC08454.jpg', 'DSC08323.jpg', 'DSC08322.jpg', 'DSC08324.jpg',
     'DSC08326.jpg', 'DSC08328.jpg', 'DSC08337.jpg', 'DSC08339.jpg',
     'DSC08353.jpg', 'DSC08357.jpg', 'DSC08362.jpg', 'DSC08364.jpg',
@@ -64,7 +64,7 @@ function App() {
     'DSC08489.jpg', 'DSC08491.jpg', 'DSC08495.jpg', 'DSC08499.jpg',
     'DSC08502.jpg', 'DSC08504.jpg', 'DSC08505.jpg', 'DSC08519.jpg',
     'DSC08508.jpg', 'DSC08509.jpg', 'DSC08512 (1).jpg', 'DSC08516.jpg', 'DSC08357.jpg',
-  ];
+  ], []);
 
   const getBookDimensions = () => {
     if (typeof window !== 'undefined') {
@@ -140,9 +140,9 @@ function App() {
                 textAlign: 'center',
                 padding: '20px'
             }}>
-                <h1 style={{ fontFamily: 'Brush Script MT, cursive', fontSize: '2.5rem', marginBottom: '15px' }}>Happy 25th Marriage Anniversary</h1>
-                <p style={{ fontFamily: 'Brush Script MT, cursive', fontSize: '1.8rem', marginBottom: '25px', opacity: '0.9' }}>Mr. & Mrs. Chatterjee</p>
-                <span style={{ fontStyle: 'bold', fontSize: '1.2rem', borderTop: '1px solid rgba(255, 255, 255, 0.5)', paddingTop: '10px' }}>
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4" style={{ fontFamily: 'Brush Script MT, cursive' }}>Happy 25th Marriage Anniversary</h1>
+                <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-6 opacity-90" style={{ fontFamily: 'Brush Script MT, cursive' }}>Mr. & Mrs. Chatterjee</p>
+                <span className="text-sm sm:text-base font-bold border-t border-white/50 pt-3">
                     25.04.2026
                 </span>
             </div>
@@ -151,6 +151,7 @@ function App() {
                 src={`/Photos/${photo}`}
                 alt={`${index + 1}`}
                 onClick={() => openModal(`/Photos/${photo}`)}
+                loading="lazy"
                 className="cursor-pointer"
                 style={{
                   maxWidth: '80%',
