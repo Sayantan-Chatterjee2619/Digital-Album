@@ -4,7 +4,6 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 
-// ✅ ForwardRef Page component — required by react-pageflip
 const Page = React.forwardRef(({ children, style, className }, ref) => (
   <div ref={ref} style={style} className={className}>
     {children}
@@ -12,7 +11,6 @@ const Page = React.forwardRef(({ children, style, className }, ref) => (
 ));
 Page.displayName = 'Page';
 
-// ✅ Memoized inner content only — NOT wrapping the Page itself
 const CoverContent = React.memo(() => (
   <div style={{
     width: '100%',
@@ -53,48 +51,254 @@ const CoverContent = React.memo(() => (
 ));
 CoverContent.displayName = 'CoverContent';
 
-const PhotoContent = React.memo(({ photo, index, onOpen }) => (
-  <>
-    <img
-      src={`/Photos/${photo}`}
-      alt={`${index + 1}`}
-      loading="lazy"
-      onClick={() => onOpen(`/Photos/${photo}`)}
-      className="cursor-pointer"
-      style={{
-        maxWidth: '80%',
-        maxHeight: '80%',
-        objectFit: 'contain',
-        objectPosition: 'center',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        willChange: 'transform',
-      }}
-    />
-    <div
-      className="absolute bottom-2 right-3 text-xs sm:text-sm"
-      style={{ color: '#9e9e9e' }}
-    >
-      {index + 1}
-    </div>
-  </>
-));
+// ✅ Hover animation via local state
+const PhotoContent = React.memo(({ photo, index, onOpen }) => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <>
+      <img
+        src={`/Photos/${photo}`}
+        alt={`${index + 1}`}
+        loading="lazy"
+        onClick={(e) => {
+          e.stopPropagation();
+          onOpen(`/Photos/${photo}`);
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onTouchStart={() => setHovered(true)}
+        onTouchEnd={() => setHovered(false)}
+        className="cursor-pointer"
+        style={{
+          maxWidth: '80%',
+          maxHeight: '80%',
+          objectFit: 'contain',
+          objectPosition: 'center',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          willChange: 'transform',
+          transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease',
+          transform: hovered
+            ? 'translate(-50%, -53%) scale(1.08)'
+            : 'translate(-50%, -50%) scale(1)',
+          boxShadow: hovered
+            ? '0 16px 40px rgba(0,0,0,0.35)'
+            : '0 4px 12px rgba(0,0,0,0.15)',
+          borderRadius: hovered ? '6px' : '2px',
+        }}
+      />
+      <div
+        className="absolute bottom-2 right-3 text-xs sm:text-sm"
+        style={{ color: '#9e9e9e' }}
+      >
+        {index + 1}
+      </div>
+    </>
+  );
+});
 PhotoContent.displayName = 'PhotoContent';
+
+const TutorialOverlay = React.memo(({ onDismiss, isMobile }) => (
+  <div
+    onClick={onDismiss}
+    style={{
+      position: 'fixed',
+      inset: 0,
+      backgroundColor: 'rgba(0,0,0,0.75)',
+      zIndex: 2000,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px',
+    }}
+  >
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        background: 'linear-gradient(135deg, #fff5f5, #ffe4e4)',
+        borderRadius: '20px',
+        padding: '32px 28px',
+        maxWidth: '340px',
+        width: '100%',
+        textAlign: 'center',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '12px' }}>📖</div>
+      <h2 style={{
+        color: '#5d4037',
+        fontSize: '1.4rem',
+        fontWeight: 'bold',
+        marginBottom: '8px',
+      }}>
+        Welcome!
+      </h2>
+      <p style={{ color: '#795548', fontSize: '0.95rem', marginBottom: '24px', lineHeight: 1.6 }}>
+        Browse through the memories of this special day.
+      </p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '28px' }}>
+        {isMobile ? (
+          <div style={tipStyle}>
+            <span style={{ fontSize: '28px' }}>👆</span>
+            <div>
+              <strong style={{ color: '#5d4037' }}>Swipe left or right</strong>
+              <p style={{ color: '#795548', fontSize: '0.85rem', margin: '2px 0 0' }}>
+                on the book to flip pages
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div style={tipStyle}>
+            <span style={{ fontSize: '28px' }}>🖱️</span>
+            <div>
+              <strong style={{ color: '#5d4037' }}>Click the page edge</strong>
+              <p style={{ color: '#795548', fontSize: '0.85rem', margin: '2px 0 0' }}>
+                to flip pages naturally
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div style={tipStyle}>
+          <span style={{ fontSize: '28px' }}>⬅️➡️</span>
+          <div>
+            <strong style={{ color: '#5d4037' }}>Previous &amp; Next buttons</strong>
+            <p style={{ color: '#795548', fontSize: '0.85rem', margin: '2px 0 0' }}>
+              below the book to navigate
+            </p>
+          </div>
+        </div>
+
+        <div style={tipStyle}>
+          <span style={{ fontSize: '28px' }}>🔍</span>
+          <div>
+            <strong style={{ color: '#5d4037' }}>Tap any photo</strong>
+            <p style={{ color: '#795548', fontSize: '0.85rem', margin: '2px 0 0' }}>
+              to view it fullscreen
+            </p>
+          </div>
+        </div>
+
+        <div style={tipStyle}>
+          <span style={{ fontSize: '28px' }}>🎵</span>
+          <div>
+            <strong style={{ color: '#5d4037' }}>Background music</strong>
+            <p style={{ color: '#795548', fontSize: '0.85rem', margin: '2px 0 0' }}>
+              plays automatically — toggle anytime
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <button
+        onClick={onDismiss}
+        style={{
+          background: 'linear-gradient(to right, rgb(255,131,131), rgb(88,13,13))',
+          color: 'white',
+          border: 'none',
+          borderRadius: '50px',
+          padding: '12px 36px',
+          fontSize: '1rem',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          boxShadow: '0 4px 15px rgba(88,13,13,0.3)',
+        }}
+      >
+        Let's Go ❤️
+      </button>
+    </div>
+  </div>
+));
+TutorialOverlay.displayName = 'TutorialOverlay';
+
+const tipStyle = {
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: '14px',
+  background: 'rgba(255,255,255,0.7)',
+  borderRadius: '12px',
+  padding: '12px 14px',
+  textAlign: 'left',
+};
+
+const MusicButton = React.memo(({ isPlaying, onToggle }) => (
+  <button
+    onClick={onToggle}
+    title={isPlaying ? 'Pause music' : 'Play music'}
+    style={{
+      position: 'fixed',
+      bottom: '24px',
+      right: '24px',
+      width: '52px',
+      height: '52px',
+      borderRadius: '50%',
+      background: 'linear-gradient(to right, rgb(255,131,131), rgb(88,13,13))',
+      border: 'none',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '22px',
+      boxShadow: '0 4px 20px rgba(88,13,13,0.4)',
+      zIndex: 999,
+      animation: isPlaying ? 'musicPulse 2s ease-in-out infinite' : 'none',
+    }}
+  >
+    {isPlaying ? '🎵' : '🔇'}
+  </button>
+));
+MusicButton.displayName = 'MusicButton';
 
 function App() {
   const bookRef = useRef(null);
+  const audioRef = useRef(null);
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1024
   );
+
+  const isMobile = windowWidth < 768;
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.loop = true;
+    audio.volume = 0.4;
+  }, []);
+
+  const toggleMusic = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+  }, [isPlaying]);
+
+  const dismissTutorial = useCallback(() => {
+    setShowTutorial(false);
+    const audio = audioRef.current;
+    if (audio) {
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
   }, []);
 
   const goToNextPage = useCallback(() => {
@@ -114,6 +318,29 @@ function App() {
     setIsModalOpen(false);
     setTimeout(() => setSelectedPhoto(null), 300);
   }, []);
+
+  const handleTouchStart = useCallback((e) => {
+    if (isModalOpen) return;
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }, [isModalOpen]);
+
+  const handleTouchEnd = useCallback((e) => {
+    if (isModalOpen || touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      if (deltaX < 0) {
+        goToNextPage();
+      } else {
+        goToPrevPage();
+      }
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+  }, [isModalOpen, goToNextPage, goToPrevPage]);
 
   const floatingItems = useMemo(() => [
     { emoji: '❤️', left: '8%',  top: '20%', size: '48px', delay: '0s',   duration: '4s'   },
@@ -177,9 +404,16 @@ function App() {
         position: 'relative',
         zIndex: 1,
       }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* Floating hearts — desktop only */}
-      {windowWidth >= 768 && floatingItems.map((item, index) => (
+      <audio ref={audioRef} src="/music/background.mp3" preload="auto" />
+
+      {showTutorial && (
+        <TutorialOverlay onDismiss={dismissTutorial} isMobile={isMobile} />
+      )}
+
+      {!isMobile && floatingItems.map((item, index) => (
         <div
           key={index}
           style={{
@@ -217,8 +451,10 @@ function App() {
           startZIndex={0}
           use3dEffects={use3d}
           drawShadow={true}
+          swipeDistance={30}
+          clickEventForward={true}
+          useMouseEvents={true}
         >
-          {/* ✅ Page is a direct forwardRef child — inner content is memoized separately */}
           {photoFiles.map((photo, index) => (
             <Page key={index} className="flip-page" style={pageStyle}>
               {index === 0
@@ -230,7 +466,6 @@ function App() {
         </HTMLFlipBook>
       </div>
 
-      {/* Navigation buttons */}
       <div className="flex gap-4 sm:gap-5 mt-6 sm:mt-8">
         <button
           onClick={goToPrevPage}
@@ -248,7 +483,8 @@ function App() {
         </button>
       </div>
 
-      {/* Lightbox modal */}
+      <MusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
+
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
