@@ -407,13 +407,13 @@ function App() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <audio ref={audioRef} src="/music/background.mp3" preload="auto" />
+      <audio ref={audioRef} src="/music/Background.mp3" preload="auto" />
 
       {showTutorial && (
         <TutorialOverlay onDismiss={dismissTutorial} isMobile={isMobile} />
       )}
 
-      {!isMobile && floatingItems.map((item, index) => (
+      {floatingItems.map((item, index) => (
         <div
           key={index}
           style={{
