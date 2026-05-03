@@ -50,20 +50,20 @@ function App() {
   ], []);
 
   const photoFiles = useMemo(() => [
-    'DSC08322.jpg', 'DSC08454.jpg', 'DSC08323.jpg', 'DSC08322.jpg', 'DSC08324.jpg',
-    'DSC08326.jpg', 'DSC08328.jpg', 'DSC08337.jpg', 'DSC08339.jpg',
-    'DSC08353.jpg', 'DSC08357.jpg', 'DSC08362.jpg', 'DSC08364.jpg',
-    'DSC08365.jpg', 'DSC08377.jpg', 'DSC08390.jpg', 'DSC08393.jpg',
-    'DSC08398.jpg', 'DSC08400.jpg', 'DSC08402.jpg', 'DSC08406.jpg',
-    'DSC08408.jpg', 'DSC08411.jpg', 'DSC08415.jpg', 'DSC08426.jpg',
-    'DSC08428.jpg', 'DSC08435.jpg', 'DSC08439.jpg', 'DSC08443.jpg',
-    'DSC08447.jpg', 'DSC08450.jpg', 'DSC08450 (1).jpg', 'DSC08451.jpg',
-    'DSC08460.jpg', 'DSC08465.jpg', 'DSC08466.jpg', 'DSC08467.jpg',
-    'DSC08470.jpg', 'DSC08472.jpg', 'DSC08473.jpg', 'DSC08476.jpg',
-    'DSC08482.jpg', 'DSC08483.jpg', 'DSC08486.jpg', 'DSC08488.jpg',
-    'DSC08489.jpg', 'DSC08491.jpg', 'DSC08495.jpg', 'DSC08499.jpg',
-    'DSC08502.jpg', 'DSC08504.jpg', 'DSC08505.jpg', 'DSC08519.jpg',
-    'DSC08508.jpg', 'DSC08509.jpg', 'DSC08512 (1).jpg', 'DSC08516.jpg', 'DSC08357.jpg',
+    'DSC08322.webp', 'DSC08454.webp', 'DSC08323.webp', 'DSC08322.webp', 'DSC08324.webp',
+    'DSC08326.webp', 'DSC08328.webp', 'DSC08337.webp', 'DSC08339.webp',
+    'DSC08353.webp', 'DSC08357.webp', 'DSC08362.webp', 'DSC08364.webp',
+    'DSC08365.webp', 'DSC08377.webp', 'DSC08390.webp', 'DSC08393.webp',
+    'DSC08398.webp', 'DSC08400.webp', 'DSC08402.webp', 'DSC08406.webp',
+    'DSC08408.webp', 'DSC08411.webp', 'DSC08415.webp', 'DSC08426.webp',
+    'DSC08428.webp', 'DSC08435.webp', 'DSC08439.webp', 'DSC08443.webp',
+    'DSC08447.webp', 'DSC08450.webp', 'DSC08450 (1).webp', 'DSC08451.webp',
+    'DSC08460.webp', 'DSC08465.webp', 'DSC08466.webp', 'DSC08467.webp',
+    'DSC08470.webp', 'DSC08472.webp', 'DSC08473.webp', 'DSC08476.webp',
+    'DSC08482.webp', 'DSC08483.webp', 'DSC08486.webp', 'DSC08488.webp',
+    'DSC08489.webp', 'DSC08491.webp', 'DSC08495.webp', 'DSC08499.webp',
+    'DSC08502.webp', 'DSC08504.webp', 'DSC08505.webp', 'DSC08519.webp',
+    'DSC08508.webp', 'DSC08509.webp', 'DSC08512 (1).webp', 'DSC08516.webp', 'DSC08357.webp',
   ], []);
 
   const getBookDimensions = () => {
