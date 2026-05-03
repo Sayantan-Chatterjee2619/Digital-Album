@@ -151,7 +151,6 @@ function App() {
                 src={`/Photos/${photo}`}
                 alt={`${index + 1}`}
                 onClick={() => openModal(`/Photos/${photo}`)}
-                loading="lazy"
                 className="cursor-pointer"
                 style={{
                   maxWidth: '80%',
