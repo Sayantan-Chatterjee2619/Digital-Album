@@ -378,8 +378,8 @@ function App() {
   ], []);
 
   const getBookDimensions = useCallback((width) => {
-    if (width < 425)  return { width: 150, height: 250, use3d: false };
-    if (width < 768)  return { width: 200, height: 250, use3d: false };
+    if (width < 425)  return { width: 150, height: 250, use3d: true };
+    if (width < 768)  return { width: 200, height: 250, use3d: true };
     if (width < 1024) return { width: 350, height: 400, use3d: true  };
     if (width < 1440) return { width: 400, height: 450, use3d: true  };
     return                   { width: 600, height: 650, use3d: true  };
