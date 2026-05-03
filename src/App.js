@@ -467,21 +467,57 @@ function App() {
       </div>
 
       <div className="flex gap-4 sm:gap-5 mt-6 sm:mt-8">
-        <button
-          onClick={goToPrevPage}
-          className="px-6 sm:px-8 py-3 rounded-full bg-white font-bold shadow-lg hover:transform hover:-translate-y-2 hover:shadow-xl transition-all duration-300"
-          style={{ color: '#667eea' }}
-        >
-          Previous
-        </button>
-        <button
-          onClick={goToNextPage}
-          className="px-6 sm:px-8 py-3 rounded-full bg-white font-bold shadow-lg hover:transform hover:-translate-y-2 hover:shadow-xl transition-all duration-300"
-          style={{ color: '#667eea' }}
-        >
-          Next
-        </button>
-      </div>
+  <button
+    onClick={goToPrevPage}
+    style={{
+      padding: '12px 32px',
+      borderRadius: '50px',
+      background: 'linear-gradient(to right, rgb(255,131,131), rgb(88,13,13))',
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: '1rem',
+      border: 'none',
+      cursor: 'pointer',
+      boxShadow: '0 4px 15px rgba(88,13,13,0.35)',
+      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    }}
+    onMouseEnter={e => {
+      e.currentTarget.style.transform = 'translateY(-2px)';
+      e.currentTarget.style.boxShadow = '0 8px 24px rgba(88,13,13,0.45)';
+    }}
+    onMouseLeave={e => {
+      e.currentTarget.style.transform = 'translateY(0)';
+      e.currentTarget.style.boxShadow = '0 4px 15px rgba(88,13,13,0.35)';
+    }}
+  >
+    ← Previous
+  </button>
+  <button
+    onClick={goToNextPage}
+    style={{
+      padding: '12px 32px',
+      borderRadius: '50px',
+      background: 'linear-gradient(to right, rgb(255,131,131), rgb(88,13,13))',
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: '1rem',
+      border: 'none',
+      cursor: 'pointer',
+      boxShadow: '0 4px 15px rgba(88,13,13,0.35)',
+      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    }}
+    onMouseEnter={e => {
+      e.currentTarget.style.transform = 'translateY(-2px)';
+      e.currentTarget.style.boxShadow = '0 8px 24px rgba(88,13,13,0.45)';
+    }}
+    onMouseLeave={e => {
+      e.currentTarget.style.transform = 'translateY(0)';
+      e.currentTarget.style.boxShadow = '0 4px 15px rgba(88,13,13,0.35)';
+    }}
+  >
+    Next →
+  </button>
+</div>
 
       <MusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
 
